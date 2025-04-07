@@ -10,4 +10,16 @@ class DashboardController extends Controller
     {
         return view('dashboard');
     }
+    public function patient()
+    {
+        return view('dashboarduser');
+    }
+    public function medecin()
+    {
+        return view('dashboardmedecin');
+    }
+    public function intermediaire ()
+    {
+        return view('dashboardinter');
+    }
 }

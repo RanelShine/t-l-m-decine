@@ -5,7 +5,7 @@
                               <div class="main-menu-header">
                                   <img class="img-80 img-radius" src="assets/images/avatar-4.jpg" alt="User-Profile-Image">
                                   <div class="user-details">
-                                      <span id="more-details">Admin<i class="fa fa-caret-down"></i></span>
+                                      <span id="more-details">Doctor<i class="fa fa-caret-down"></i></span>
                                   </div>
                               </div>
         
@@ -27,55 +27,16 @@
                                       <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
                                       <span class="pcoded-mcaret"></span>
                                   </a>
-                              </li>
-                              <li class="pcoded-hasmenu">
-                                  <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                      <span class="pcoded-micon"><i class="ti-user"></i></span>
-                                      <span class="pcoded-mtext"  data-i18n="nav.basic-components.main">Users  &amp; Specialists</span>
-                                      <span class="pcoded-mcaret"></span>
-                                  </a>
-                                  <ul class="pcoded-submenu">
-                                      <li class=" ">
-                                          <a href="accordion.html" class="waves-effect waves-dark">
-                                              <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Specialists</span>
-                                              <span class="pcoded-mcaret"></span>
-                                          </a>
-                                      </li>
-                                      <li class=" ">
-                                          <a href="breadcrumb.html" class="waves-effect waves-dark">
-                                              <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Patients</span>
-                                              <span class="pcoded-mcaret"></span>
-                                          </a>
-                                      </li>
-                                      <li class=" ">
-                                          <a href="button.html" class="waves-effect waves-dark">
-                                              <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Appointments</span>
-                                              <span class="pcoded-mcaret"></span>
-                                          </a>
-                                      </li>
-                                      <li class=" ">
-                                          <a href="tabs.html" class="waves-effect waves-dark">
-                                              <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Requests</span>
-                                              <span class="pcoded-mcaret"></span>
-                                          </a>
-                                      </li>
-
-                                      <li class=" ">
-                                          <a href="typography.html" class="waves-effect waves-dark">
-                                              <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Typography</span>
-                                              <span class="pcoded-mcaret"></span>
-                                          </a>
-                                      </li>
-                                  </ul>
-                              </li>
                           </ul>
                           <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Medical records</div>
                           <ul class="pcoded-item pcoded-left-item">
+                          <li>
+                                  <a href="form-elements-component.html" class="waves-effect waves-dark">
+                                      <span class="pcoded-micon"><i class="ti-user"></i><b>FC</b></span>
+                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">Patients</span>
+                                      <span class="pcoded-mcaret"></span>
+                                  </a>
+                              </li>
                               <li>
                                   <a href="form-elements-component.html" class="waves-effect waves-dark">
                                       <span class="pcoded-micon"><i class="ti-folder"></i><b>FC</b></span>
@@ -92,8 +53,8 @@
                               </li>
                               <li>
                                   <a href="bs-basic-table.html" class="waves-effect waves-dark">
-                                      <span class="pcoded-micon"><i class="ti-file"></i><b>FC</b></span>
-                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">Report</span>
+                                      <span class="pcoded-micon"><i class="ti-bell"></i><b>FC</b></span>
+                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">Appointment</span>
                                       <span class="pcoded-mcaret"></span>
                                   </a>
                               </li>
@@ -149,15 +110,21 @@
         
                           </ul>
         
-                          <div class="pcoded-navigation-label" data-i18n="nav.category.other">Admin panel</div>
+                          <div class="pcoded-navigation-label" data-i18n="nav.category.other">Doctor panel</div>
                           <ul class="pcoded-item pcoded-left-item">
                           <li>
+                          <a href="map-google.html" class="waves-effect waves-dark">
+                                      <span class="pcoded-micon"><i class="ti-email"></i><b>FC</b></span>
+                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">Messages</span>
+                                      <span class="pcoded-mcaret"></span>
+                                  </a>
+                              <!-- </li>
                                   <a href="map-google.html" class="waves-effect waves-dark">
                                       <span class="pcoded-micon"><i class="ti-files"></i><b>FC</b></span>
                                       <span class="pcoded-mtext" data-i18n="nav.form-components.main">Forms</span>
                                       <span class="pcoded-mcaret"></span>
                                   </a>
-                              </li>
+                              </li> -->
                               <li>
                                   <a href="map-google.html" class="waves-effect waves-dark">
                                       <span class="pcoded-micon"><i class="ti-settings"></i><b>FC</b></span>

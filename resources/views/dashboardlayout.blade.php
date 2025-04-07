@@ -48,7 +48,16 @@
           @include('includes.navbar')
           <div class="pcoded-main-container">
           <div class="pcoded-wrapper">
-          @include('includes.sidebar')
+          @if (request()->routeIs('dashboardu'))
+               @include('includes.sidebaru')
+          @elseif (request()->routeIs('dashboardm'))
+               @include('includes.sidebarm')
+          @elseif (request()->routeIs('dashboardi'))
+               @include('includes.sidebari')
+          @else
+              @include('includes.sidebar')
+          @endif
+          
             
             @yield('content')
           </div>
