@@ -30,4 +30,4 @@ Route::get('connexion', [AuthController::class, 'showLoginForm'])->name('login')
 Route::post('connexion', [AuthController::class, 'login'])->name('verification.login');
 
 Route::post('deconnexion', [AuthController::class, 'logout'])->name('logout');
-Route::post('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
