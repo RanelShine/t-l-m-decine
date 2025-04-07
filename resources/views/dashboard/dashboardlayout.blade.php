@@ -40,22 +40,22 @@
 
   <body>
 
-  @include('includes.preloader')
+  @include('dashboard.includes.preloader')
   <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
 
-          @include('includes.navbar')
+          @include('dashboard.includes.navbar')
           <div class="pcoded-main-container">
           <div class="pcoded-wrapper">
           @if (request()->routeIs('dashboardu'))
-               @include('includes.sidebaru')
+               @include('dashboard.includes.sidebaru')
           @elseif (request()->routeIs('dashboardm'))
-               @include('includes.sidebarm')
+               @include('dashboard.includes.sidebarm')
           @elseif (request()->routeIs('dashboardi'))
-               @include('includes.sidebari')
+               @include('dashboard.includes.sidebari')
           @else
-              @include('includes.sidebar')
+              @include('dashboard.includes.sidebar')
           @endif
           
             

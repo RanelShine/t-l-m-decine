@@ -8,18 +8,18 @@ class DashboardController extends Controller
 {
     public function index() 
     {
-        return view('dashboard');
+        return view('dashboard.dashboard');
     }
     public function patient()
     {
-        return view('dashboarduser');
+        return view('dashboard.dashboarduser');
     }
     public function medecin()
     {
-        return view('dashboardmedecin');
+        return view('dashboard.dashboardmedecin');
     }
     public function intermediaire ()
     {
-        return view('dashboardinter');
+        return view('dashboard.dashboardinter');
     }
 }
