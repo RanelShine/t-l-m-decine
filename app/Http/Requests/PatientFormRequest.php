@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MedicTalkRequest extends FormRequest
+class PatientFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class MedicTalkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'Date_de_Naissance'=>'required|date',
         ];
     }
 }

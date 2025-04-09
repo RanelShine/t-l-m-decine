@@ -35,11 +35,11 @@
 
 </head>
 <body id="home" data-spy="scroll" data-target="#navbar-wd" data-offset="98">
-    @include('User.includes.header');
+    @include('includes.header');
 
     @yield('content');
 
-    @include('User.includes.footer');
+    @include('includes.footer');
     <a href="#" id="scroll-to-top" class="new-btn-d br-2"><i class="fa fa-angle-up"></i></a>
 
 	<!-- ALL JS FILES -->

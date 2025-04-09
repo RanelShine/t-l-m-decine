@@ -30,10 +30,10 @@
                             <div class="dropdown-menu p-3" style="min-width: 250px;">
                                 <h4 class="dropdown-header">Je suis :</h4>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('register.patient') }}">
+                                <a class="dropdown-item" href="{{ route('home.register.patient') }}">
                                     <i class="fa fa-user mr-2"></i> Patient
                                 </a>
-                                <a class="dropdown-item" href="{{ route('register.medecin') }}">
+                                <a class="dropdown-item" href="{{ route('home.register.medecin') }}">
                                     <i class="fa fa-user-md mr-2"></i> Médecin
                                 </a>
                             </div>
@@ -41,7 +41,7 @@
                 
 
                         <li class="nav-item dropdown">
-                            <a href="{{route('login')}}" class="nav-link btn btn-primary mx-1 dropdown-toggle" data-toggle="dropdown">
+                            <a href="{{route('home.login')}}" class="nav-link btn btn-primary mx-1 dropdown-toggle">
                                 <i class="fas fa-sign-in-alt mr-1"></i> Connexion
                             </a>
                             </div>
@@ -58,11 +58,11 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user mr-2"></i> Profil
                                 </a>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                <a class="dropdown-item" href="{{ route('home.logout') }}"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <form id="logout-form" action="{{ route('home.logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </div>

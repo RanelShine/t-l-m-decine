@@ -1,4 +1,4 @@
-@extends('User.layout')
+@extends('Layouts.HomeLayout')
 
 @section('content')
 <!-- Début Bannière -->

@@ -5,71 +5,151 @@ namespace App\Http\Controllers;
 use App\Models\Medecin;
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UserFormRequest;
+use App\Http\Requests\LoginFormRequest;
+use App\Http\Requests\MedecinFormRequest;
+use App\Http\Requests\PatientFormRequest;
 
 class AuthController extends Controller
 {
-    // Afficher les formulaires d'inscription
+    // * Afficher les formulaires d'inscription
     public function showPatientInscription()
     {
-        return view('User.patientInscriptions');
+        $patient = new Patient();
+        $user = new User();
+        return view('Patient.patientInscriptions', [
+            'patient' => $patient,
+            'user' => $user,
+        ]);
     }
 
     public function showMedecinInscription()
     {
-        return view('User.medecinInscription');
+        $medecin = new Medecin();
+        $user = new User(); 
+        return view('Medecin.medecinInscription', [
+            'medecin' => $medecin,
+            'user' => $user,
+        ]);
     }
+
+    // * Inscription patient
+    public function registerPatient(UserFormRequest $userRequest, PatientFormRequest $patientRequest)
+    {
+        DB::beginTransaction();
+        try 
+        {
+            // * Creation de l'utilisateur
+            User::create([
+                'nom' => $userRequest->name,
+                'email' => $userRequest->email,
+                'telephone' => $userRequest->phone,
+                'password' => Hash::make($userRequest->password),
+            ]);
+
+            // * Creation du patient associé à l'utilisateur
+            Patient::create([
+                'user_id' => User::where('email', $userRequest->email)->first()->id,
+                'Date_de_Naissance' => $patientRequest->Date_de_Naissance,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('home.login')->with('success', 'Compte patient créé.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Erreur lors de la création du compte patient.')->withInput();
+        }
+    }
+
+    // * Inscription médecin
+    public function registerMedecin(UserFormRequest $userRequest, MedecinFormRequest $medecinRequest)
+    {
+
+        DB::beginTransaction();
+        try 
+        {
+            // * Creation de l'utilisateur
+        User::create([
+            'nom' => $userRequest->name,
+            'email' => $userRequest->email,
+            'telephone' => $userRequest->phone,
+            'password' => Hash::make($userRequest->password),
+        ]);
+
+        // * Creation du médécin associé à l'utilisateur
+        Medecin::create([
+            'user_id' => User::where('email', $userRequest->email)->first()->id,
+            'specialite' => $medecinRequest->specialite,
+        ]);
+
+        DB::commit();
+
+
+        return redirect()->route('home.login')->with('success', 'Compte médecin créé.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Erreur lors de la création du compte médecin.')->withInput();
+        }
+        
+    }
+
+
+    // * Connexion
 
     public function showLoginForm ()
     {
-        return view('User.connexion');
+        $user = new User();
+        return view('connexion',[
+            'user' => $user,
+        ]);
     }
 
-    // Inscription patient
-    public function registerPatient(Request $request)
+    public function login(LoginFormRequest $loginRequest)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:patients',
-            'phone' => 'required',
-            'password' => 'required|min:6|confirmed',
-        ]);
+        $credentials = $loginRequest->validated();
+        if (Auth::attempt($credentials))
+        {
+            $loginRequest->session()->regenerate();
+            $user = Auth::user();
 
-        Patient::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-        ]);
+            if($loginRequest->user_type == 'patient')
+            {
+                return redirect()->route('dashboard.patient')->with('success', 'Bienvenue Patient');
+            }
+            elseif($loginRequest->user_type == 'medecin')
+            {
+                return redirect()->route('dashboard.medecin')->with('success', 'Bienvenue Médecin');
+            }
+            elseif($loginRequest->user_type == 'administrateur')
+            {
+                return redirect()->route('dashboard.administrateur')->with('success', 'Bienvenue Administrateur');
+            }
+            elseif($loginRequest->user_type == 'superadmin')
+            {
+                return redirect()->route('dashboard.secretaire')->with('success', 'Bienvenue Super Administrateur');
+            }
 
-        return redirect()->route('login')->with('success', 'Compte patient créé.');
+            return redirect()->route('home.login')->with('error', 'Type d\'utilisateur non reconnu.');
+        }
+        return back()->withErrors([
+            'email' => "Verifier votre adresse mail",
+            'password' => "Verifier votre mot de passe",
+        ])->onlyInput('email');
+
     }
 
-    // Inscription médecin
-    public function registerMedecin(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:medecins',
-            'phone' => 'required',
-            'speciality' => 'required',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
-        Medecin::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('login')->with('success', 'Compte médecin créé.');
-    }
+    // * Déconnexion
 
     public function logout()
     {
         Auth::logout();
         return redirect()->route('login');
     }
+
 
 }

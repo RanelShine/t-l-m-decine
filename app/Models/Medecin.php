@@ -10,7 +10,7 @@ class Medecin extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['specialite', 'est_disponible'];
+    protected $fillable = ['specialite'];
 
     public function user ()
     {
