@@ -29,3 +29,7 @@ Route::prefix('home')->name('home.')->group(function()
 });
 
 Route::post('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('dashboardu', [DashboardController::class, 'patient'])->name('dashboardu');
+Route::get('dashboardm', [DashboardController::class, 'medecin'])->name('dashboardm');
+Route::get('dashboardi', [DashboardController::class, 'intermediaire'])->name('dashboardi');
