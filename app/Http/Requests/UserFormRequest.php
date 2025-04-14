@@ -22,7 +22,7 @@ class UserFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom'=>'required|max:20',
+            'name'=>'required|max:20',
             'email'=>'required|email|unique:users,email',
             'telephone'=>'required|max_digits:9',
             'password'=>'required|min:8|unique:users,password'

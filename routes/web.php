@@ -18,14 +18,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('home')->name('home.')->group(function()
 {
-    Route::get('/', [HomeController::class, 'home']);
-    Route::get('inscription/patient', [AuthController::class, 'showPatientInscription'])->name('register.patient');
-    Route::post('inscription/patient', [AuthController::class, 'registerPatient'])->name('verification.register.patient');
-    Route::get('inscription/medecin', [AuthController::class, 'showMedecinInscription'])->name('register.medecin');
-    Route::post('inscription/medecin', [AuthController::class, 'registerMedecin'])->name('verification.register.medecin');
-    Route::get('connexion', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('connexion', [AuthController::class, 'login'])->name('verification.login');
-    Route::post('deconnexion', [AuthController::class, 'logout'])->name('logout');
+    // * Page accueil
+    Route::get('/', [HomeController::class, 'home'])->name('index');
+    // * Incription Patient
+    Route::get('inscription/patient', [AuthController::class, 'showPatientInscription'])->middleware('guest')->name('register.patient');
+    Route::post('inscription/patient', [AuthController::class, 'registerPatient']);
+    // * Incription Medecin
+    Route::get('inscription/medecin', [AuthController::class, 'showMedecinInscription'])->middleware('guest')->name('register.medecin');
+    Route::post('inscription/medecin', [AuthController::class, 'registerMedecin']);
+    // * Connexion
+    Route::get('connexion', [AuthController::class, 'showLoginForm'])->middleware('guest')->name('login');
+    Route::post('connexion', [AuthController::class, 'login']);
+    // * Deconnexion
+    Route::delete('deconnexion', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 });
 
-Route::post('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::prefix('admin')->middleware('auth')->name('admin.')->group(function()
+{
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+

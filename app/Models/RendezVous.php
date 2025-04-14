@@ -9,11 +9,13 @@ class RendezVous extends Model
 {
     use HasFactory;
 
+    // * Un RDV appartient a un patient 
     public function patient ()
     {
         return $this->belongsTo(Patient::class);
     }
 
+    // * Un RDV appartient a un medecin
     public function medecin ()
     {
         return $this->belongsTo(Medecin::class);
