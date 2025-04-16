@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +34,8 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'
 Route::get('dashboardu', [DashboardController::class, 'patient'])->name('dashboardu');
 Route::get('dashboardm', [DashboardController::class, 'medecin'])->name('dashboardm');
 Route::get('dashboardi', [DashboardController::class, 'intermediaire'])->name('dashboardi');
+Route::get('/dashboard', [AuthController::class, 'showDashboard'])->name('dashboard');
+Route::put('/patients/{id}', [AuthController::class, 'update'])->name('patients.update');
+Route::delete('/patients/{id}', [AuthController::class, 'destroy'])->name('patients.delete');
+Route::post('/contact', [ContactController::class, 'contact'])->name('contact');
+

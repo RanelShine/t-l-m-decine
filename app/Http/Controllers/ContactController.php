@@ -29,8 +29,8 @@ class ContactController extends Controller
          
          $contact = contact::query()->create($validatedData); 
          
-         ProcessContact::dispatch($contact);
-        //  Notification::send($contact, new MessageSend($contact));
+        //ProcessContact::dispatch($contact);
+        Notification::send($contact, new MessageSend($contact));
          return back()->with('success', 'Message  successfully sent');
     } 
 }

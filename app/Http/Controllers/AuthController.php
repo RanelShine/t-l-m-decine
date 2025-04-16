@@ -16,6 +16,18 @@ use App\Http\Requests\PatientFormRequest;
 
 class AuthController extends Controller
 {
+    public function showDashboard()
+{
+    // Récupérer tous les patients
+    $patients = Patient::all();
+
+    // Passer la variable patients à la vue du tableau de bord
+    return view('dashboard.dashboard', [  // Notez que nous spécifions 'dashboard.dashboard' ici
+        'patients' => $patients
+    ]);
+}
+
+    
     // * Afficher les formulaires d'inscription
     public function showPatientInscription()
     {
@@ -151,5 +163,31 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
+// PatientController.php
+public function update(Request $request, $id)
+{
+    $patient = Patient::findOrFail($id);
+
+    // Mettre à jour les informations
+    $patient->user->nom = $request->input('nom');
+    $patient->user->email = $request->input('email');
+    $patient->user->telephone = $request->input('telephone');
+    $patient->Date_de_Naissance = $request->input('date_naissance');
+
+    // Sauvegarder les modifications
+    $patient->user->save();
+    $patient->save();
+
+    return redirect()->route('dashboard')->with('success', 'Patient mis à jour avec succès');
+}
+
+// PatientController.php
+public function destroy($id)
+{
+    $patient = Patient::findOrFail($id);
+    $patient->delete();  // Supprimer le patient
+
+    return redirect()->route('dashboard')->with('success', 'Patient supprimé avec succès');
+}
 
 }
