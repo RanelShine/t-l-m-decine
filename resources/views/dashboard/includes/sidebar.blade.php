@@ -8,11 +8,11 @@
                 <div class="user-details">
                     <span id="more-details">
                         @if(Auth::user()->role == 'administrateur')
-                            Admin
+                            Administrateur
                         @elseif(Auth::user()->role == 'patient')
                             Patient
                         @elseif(Auth::user()->role == 'medecin')
-                            Doctor
+                            Medecin
                         @endif
                         <i class="fa fa-caret-down"></i>
                     </span>
