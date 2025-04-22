@@ -21,8 +21,13 @@ class AuthController extends Controller
     // ! Afficher les formulaires d'inscription
     public function showPatientInscription()
     {
+        
         $patient = new Patient();
         $user = new User();
+
+
+        // $user->assignRole('patient')->where('id', 4);
+
         return view('Patient.patientInscriptions',[
             'patient' => $patient,
             'user' => $user,
@@ -31,6 +36,17 @@ class AuthController extends Controller
 
     public function showMedecinInscription()
     {
+
+        //     $user = User::firstOrCreate([
+        //     'nom' => "TAYOU",
+        //     'telephone' => 698675434,
+        //     "email" => "tayou@gmail.com",
+        //     'password' => Hash::make(1234567890),
+        // ]);
+        // $medecin = Medecin::firstOrCreate([
+        //     'user_id' => 9,
+        //     'specialite' => 'Traumatologue',
+        // ]);
         $medecin = new Medecin();
         $user = new User(); 
         return view('Medecin.medecinInscription', [
@@ -51,7 +67,7 @@ class AuthController extends Controller
     
             // * Création de l'utilisateur
             $user = User::create([
-                'name' => $userRequest->name,
+                'nom' => $userRequest->nom,
                 'email' => $userRequest->email,
                 'telephone' => $userRequest->telephone,
                 'password' => Hash::make($userRequest->password),
@@ -72,7 +88,7 @@ class AuthController extends Controller
                 throw new \Exception("Le rôle 'patient' n'existe pas.");
             }
 
-
+            Log::info('Redirection vers la page de connexion...');
             // * Redirection vers la page de connexion avec un message de succès
             return redirect()->route('home.login')->with('success', 'Inscription réussie. Veuillez vous connecter.');
             
@@ -94,7 +110,7 @@ class AuthController extends Controller
         {
             // * Creation de l'utilisateur
         $user = User::create([
-            'name' => $userRequest->name,
+            'nom' => $userRequest->nom,
             'email' => $userRequest->email,
             'telephone' => $userRequest->telephone,
             'password' => Hash::make($userRequest->password),
@@ -114,7 +130,7 @@ class AuthController extends Controller
         } else {
             throw new \Exception("Le rôle 'medecin' n'existe pas.");
         }
-        
+        Log::info('Redirection vers la page de connexion...');
         // * Redirection vers la page de connexion avec un message de succès
         return redirect()->route('home.login')->with('success', 'Inscription réussie. Veuillez vous connecter.');
         } 
@@ -140,7 +156,7 @@ class AuthController extends Controller
         $user = User::firstOrCreate([
             'email' => $email,
         ], [
-            'name' => $name,
+            'nom' => $name,
             'telephone' => $telephone,
             'password' => Hash::make($password),
         ]);

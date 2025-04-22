@@ -15,7 +15,7 @@
                     @endif
                     <form method="POST" action="{{route('home.register.patient')}}">
                         @csrf
-                        @include('includes.input', [ 'label' =>'Nom complet', 'name' => 'name', 'value' => $user->name, ])
+                        @include('includes.input', [ 'label' =>'Nom complet', 'name' => 'nom', 'value' => $user->nom, ])
                         @include('includes.input', [ 'label' =>'Adresse e-mail', 'name' => 'email', 'value' => $user->email ,'type'=> 'email'])
                         @include('includes.input', [ 'label' =>'Numéro de téléphone', 'name' => 'telephone', 'type'=> 'number', 'value' => $user->telephone ])
                         @include('includes.input', [ 'label' =>'Date de naissance', 'name' => 'Date_de_Naissance', 'type' => 'date', 'value' => $patient->Date_de_Naissance ])
