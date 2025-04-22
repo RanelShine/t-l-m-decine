@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->date('Date_de_Naissance');
-            // $table->timestamps();
+            $table->timestamps();
         });
     }
 
@@ -26,4 +26,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('patients');
     }
+    
 };

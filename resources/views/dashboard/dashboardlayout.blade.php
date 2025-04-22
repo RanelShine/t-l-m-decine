@@ -48,7 +48,7 @@
           @include('dashboard.includes.navbar')
           <div class="pcoded-main-container">
           <div class="pcoded-wrapper">
-          @if (request()->routeIs('dashboardu'))
+          <!-- @if (request()->routeIs('dashboardu'))
                @include('dashboard.includes.sidebaru')
           @elseif (request()->routeIs('dashboardm'))
                @include('dashboard.includes.sidebarm')
@@ -56,7 +56,7 @@
                @include('dashboard.includes.sidebari')
           @else
               @include('dashboard.includes.sidebar')
-          @endif
+          @endif -->
           
             
             @yield('content')
@@ -94,6 +94,7 @@
     <!-- custom js -->
     <script type="text/javascript" src="{{asset('assets/pages/dashboard/custom-dashboard.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/js/script.js')}} "></script>
+    
 </body>
 
 </html>

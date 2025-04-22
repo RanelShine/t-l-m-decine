@@ -559,7 +559,8 @@
             
             <div class="col-lg-12 col-xs-12">
               <div class="contact-block">
-                <form id="contactForm">
+                <form action="{{route('contact')}}" method="post">
+                @csrf
                   <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -575,7 +576,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <input type="text" placeholder="Votre Téléphone" id="number" class="form-control" name="number" required data-error="Veuillez saisir votre numéro">
+                            <input type="text" placeholder="intitulé" id="number" class="form-control" name="number" required data-error="Veuillez saisir votre intitulé">
                             <div class="help-block with-errors"></div>
                         </div> 
                     </div>
@@ -586,6 +587,10 @@
                         </div>
                         <div class="submit-button text-center">
                             <button class="btn btn-common" id="submit" type="submit">Envoyer le Message</button>
+                            {{-- Message de confirmation --}}
+@if(session('success'))
+    <p style="color:green">{{ session('success') }}</p>
+@endif
                             <div id="msgSubmit" class="h3 text-center hidden"></div> 
                             <div class="clearfix"></div> 
                         </div>
