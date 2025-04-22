@@ -9,6 +9,7 @@ class Message extends Model
 {
     use HasFactory;
 
+    // * Un message appartient a un user
     public function user ()
     {
         return $this->belongsTo(User::class);

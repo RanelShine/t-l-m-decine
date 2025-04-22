@@ -58,12 +58,13 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user mr-2"></i> Profil
                                 </a>
-                                <a class="dropdown-item" href="{{ route('home.logout') }}"
+                                <a class="dropdown-item" href="#"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
                                 </a>
                                 <form id="logout-form" action="{{ route('home.logout') }}" method="POST" class="d-none">
                                     @csrf
+                                    @method('delete')
                                 </form>
                             </div>
                         </li>

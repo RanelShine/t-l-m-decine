@@ -7,11 +7,16 @@
             <div class="card">
                 <div class="card-header text-center">Inscription Médecin</div>
                 <div class="card-body">
-                    <form method="POST" action="{{route('home.verification.register.medecin')}}">
+                    @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    <form method="POST" action="{{route('home.register.medecin')}}">
                         @csrf
                         @include('includes.input', [ 'label' =>'Nom complet', 'name' => 'nom', 'value' => $user->nom ])
-                        @include('includes.input', [ 'label' =>'Adresse e-mail', 'name' => 'email', 'value' => $user->email ])
-                        @include('includes.input', [ 'label' =>'Numéro de téléphone', 'name' => 'telephone', 'value' => $user->telephone ])
+                        @include('includes.input', [ 'label' =>'Adresse e-mail', 'name' => 'email', 'value' => $user->email,'type'=> 'email' ])
+                        @include('includes.input', [ 'label' =>'Numéro de téléphone', 'name' => 'telephone', 'type'=> 'number','value' => $user->telephone ])
                         @include('includes.select', ['label' => 'Spécialité','name' => 'specialite','options' => ['généraliste' => 'Médecin généraliste','cardiologue' => 'Cardiologue','dermatologue' => 'Dermatologue','traumatologue'=>'Traumatologue', 'autre' => 'Autre'],'value' => $medecin->specialite])
                         @include('includes.input', [ 'label' =>'Mot de passe', 'name' => 'password', 'type' => 'password' ])
                         <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>

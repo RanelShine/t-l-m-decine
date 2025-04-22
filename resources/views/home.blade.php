@@ -1,6 +1,17 @@
 @extends('Layouts.HomeLayout')
 
 @section('content')
+
+@auth
+    <div class="card-header text-center">
+        Salut, {{ Auth::user()->name }}.
+        @if(Auth::user()->roles->isNotEmpty())
+            {{ Auth::user()->roles->first()->name }}
+        @else
+            (Aucun rôle)
+        @endif
+    </div>
+@endauth
 <!-- Début Bannière -->
 <div class="ulockd-home-slider">
     <div class="container-fluid">
@@ -647,5 +658,7 @@
         </div>
     </div>
 </div>
+
+
 <!-- Fin Newsletter -->
 @endsection
