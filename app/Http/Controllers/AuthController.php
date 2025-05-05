@@ -24,7 +24,7 @@ class AuthController extends Controller
     $patients = Patient::all();
 
     // Passer la variable patients à la vue du tableau de bord
-    return view('dashboard.dashboard', [  // Notez que nous spécifions 'dashboard.dashboard' ici
+    return view('admin.dashboard', [ 
         'patients' => $patients
     ]);
 }
@@ -176,21 +176,32 @@ class AuthController extends Controller
         $user->assignRole($roleName);
     }
 
-    // ! Creation des Users avec leur role et persistance en BD
-    public function create()
-    {
+   // ! Creation des Users avec leur role et persistance en BD
+public function create()
+{
+    // Vérifier si l'utilisateur 'super admin' existe déjà
+    if (!User::where('email', 'superadmin@gmail.com')->exists()) {
         $this->createUserWithRole('super admin', 'superadmin@gmail.com', 699999999, 'superadmin123', 'super admin');
+    }
+
+    // Vérifier si l'utilisateur 'admin' existe déjà
+    if (!User::where('email', 'admin@gmail.com')->exists()) {
         $this->createUserWithRole('admin', 'admin@gmail.com', 654678321, 'admin123', 'admin');
+    }
+
+    // Vérifier si l'utilisateur 'assistant' existe déjà
+    if (!User::where('email', 'assistant@gmail.com')->exists()) {
         $this->createUserWithRole('assistant', 'assistant@gmail.com', 690856334, 'assistant123', 'assistant');
     }
+}
 
+// !  Connexion
+public function showLoginForm()
+{ 
 
-    // !  Connexion
-    public function showLoginForm ()
-    { 
-        $this->create();
-        return view('connexion');
-    }
+    return view('connexion');
+}
+
 
     public function login(LoginFormRequest $loginRequest)
     {
@@ -201,7 +212,8 @@ class AuthController extends Controller
         if (Auth::attempt($credentials))
         {
             $loginRequest->session()->regenerate();
-            return redirect()->intended(route('home.index'));
+            return redirect()->intended(route('admin.dashboard'))
+                ->with('success', 'Connexion réussie.');
         }
         return back()->withErrors([
             'email' => "Idetifiant Incorrect",
@@ -213,7 +225,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('home.login');
     }
 
 // PatientController.php

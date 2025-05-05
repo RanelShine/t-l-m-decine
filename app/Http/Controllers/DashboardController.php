@@ -1,15 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Patient;
+use App\Models\User;
+use App\Models\Medecin;
+use App\Models\Intermediaire;
 
 use Illuminate\Http\Request;
 use view;
 
 class DashboardController extends Controller
 {
-    public function index() 
+    public function index()
     {
-        return view('dashboard.dashboard');
+        $patients = Patient::with('user')->get(); // Récupère les patients avec la relation "user"
+    
+        return view('dashboard.dashboard', compact('patients'));
     }
     public function patient()
     {

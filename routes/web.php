@@ -31,7 +31,7 @@ Route::prefix('home')->name('home.')->group(function()
     Route::get('connexion', [AuthController::class, 'showLoginForm'])->middleware('guest')->name('login');
     Route::post('connexion', [AuthController::class, 'login']);
     // * Deconnexion
-    Route::delete('deconnexion', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+    Route::post('deconnexion', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 });
 
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function()
@@ -39,3 +39,5 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function()
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
+Route::put('/patients/{id}', [AuthController::class, 'update'])->name('patients.update');
+Route::delete('/patients/{id}', [AuthController::class, 'destroy'])->name('patients.delete');

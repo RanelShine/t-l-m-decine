@@ -559,7 +559,7 @@
             
             <div class="col-lg-12 col-xs-12">
               <div class="contact-block">
-                <form action="{{route('contact')}}" method="post">
+                <form action="" method="post">
                 @csrf
                   <div class="row">
                     <div class="col-md-6">
