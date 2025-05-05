@@ -37,6 +37,7 @@ Route::prefix('home')->name('home.')->group(function()
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function()
 {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 Route::put('/patients/{id}', [AuthController::class, 'update'])->name('patients.update');
