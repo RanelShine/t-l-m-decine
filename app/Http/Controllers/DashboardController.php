@@ -15,7 +15,7 @@ class DashboardController extends Controller
     {
         $patients = Patient::with('user')->get(); // Récupère les patients avec la relation "user"
     
-        return view('dashboard.dashboard', compact('patients'));
+        return view('dashboard', compact('patients'));
     }
     public function patient()
     {
