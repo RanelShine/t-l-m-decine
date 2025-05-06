@@ -9,6 +9,22 @@ class RendezVous extends Model
 {
     use HasFactory;
 
+    protected $table = 'rendezvous';
+
+    protected $fillable = [
+        'patient_id',
+        'medecin_id',
+        'date_rendezvous',
+        'heure',
+        'localisation',
+        'motif',
+        'status',
+    ];
+
+    protected $casts = [
+        'date_rendezvous' => 'date',       // convertit en Carbon (date only)
+        'heure'           => 'datetime:H:i', // convertit en Carbon (heure seule, mais tu peux aussi le laisser en string)
+    ];
     // * Un RDV appartient a un patient 
     public function patient ()
     {
@@ -20,4 +36,5 @@ class RendezVous extends Model
     {
         return $this->belongsTo(Medecin::class);
     }
+
 }

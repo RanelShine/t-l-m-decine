@@ -22,10 +22,10 @@
             <div class="main-menu-content">
                 <ul>
                     <li class="more-details">
-                        <a href="user-profile.html"><i class="ti-user"></i>View Profile</a>
-                        <a href="#!"><i class="ti-settings"></i>Settings</a>
+                        <a href="user-profile.html"><i class="ti-user"></i>Profil</a>
+                        <a href="#!"><i class="ti-settings"></i>Paramètre</a>
                         <a class="dropdown-item" href="{{ route('home.logout') }}"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="ti-layout-sidebar-left"></i>Logout</a>
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="ti-layout-sidebar-left"></i>Deconnexion</a>
                     </li>
                 </ul>
             </div>
@@ -44,14 +44,14 @@
             <li class="pcoded-hasmenu">
                 <a href="javascript:void(0)" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-user"></i></span>
-                    <span class="pcoded-mtext" data-i18n="nav.basic-components.main">Users &amp; Specialists</span>
+                    <span class="pcoded-mtext" data-i18n="nav.basic-components.main">Patients &amp; Médecins</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
                 <ul class="pcoded-submenu">
                     <li class=" ">
                         <a href="accordion.html" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Specialists</span>
+                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Médecins</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
@@ -65,7 +65,7 @@
                     <li class=" ">
                         <a href="button.html" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Appointments</span>
+                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Rendez-vous</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
@@ -88,7 +88,7 @@
             @endif
         </ul>
         
-        <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Medical records</div>
+        <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Dossiers medicaux</div>
         <ul class="pcoded-item pcoded-left-item">
             @if(Auth::user()->role == 'medecin')
             <li>
@@ -103,14 +103,14 @@
             <li>
                 <a href="form-elements-component.html" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-folder"></i><b>FC</b></span>
-                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Medical records</span>
+                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Dossiers medicaux</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
             <li>
                 <a href="bs-basic-table.html" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-clipboard"></i><b>FC</b></span>
-                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Lab result</span>
+                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">resultats</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
@@ -121,9 +121,9 @@
                     <span class="pcoded-micon"><i class="ti-bell"></i><b>FC</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.form-components.main">
                         @if(Auth::user()->role == 'medecin')
-                            Appointment
+                        Rendez-vous
                         @else
-                            Appointments
+                        Rendez-vous
                         @endif
                     </span>
                     <span class="pcoded-mcaret"></span>
@@ -144,7 +144,7 @@
             <li>
                 <a href="map-google.html" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-medall"></i><b>FC</b></span>
-                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Medications</span>
+                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">medicaments</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
@@ -174,7 +174,7 @@
             <li>
                 <a href="map-google.html" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-files"></i><b>FC</b></span>
-                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Forms</span>
+                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Formulaires</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
@@ -183,7 +183,7 @@
             <li>
                 <a href="map-google.html" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-settings"></i><b>FC</b></span>
-                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Settings</span>
+                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">paramètres</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>

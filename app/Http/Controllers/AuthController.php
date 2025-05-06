@@ -23,11 +23,16 @@ class AuthController extends Controller
     // Récupérer tous les patients
     $patients = Patient::all();
 
-    // Passer la variable patients à la vue du tableau de bord
+    // Récupérer tous les médecins
+    $medecins = Medecin::all();
+
+    // Passer les deux variables à la vue
     return view('admin.dashboard', [ 
-        'patients' => $patients
+        'patients' => $patients,
+        'medecins' => $medecins
     ]);
 }
+
 
     
     // * Afficher les formulaires d'inscription
@@ -229,7 +234,7 @@ public function showLoginForm()
     }
 
 // PatientController.php
-public function update(Request $request, $id)
+public function updatep(Request $request, $id)
 {
     $patient = Patient::findOrFail($id);
 
@@ -247,7 +252,7 @@ public function update(Request $request, $id)
 }
 
 // PatientController.php
-public function destroy($id)
+public function destroyp($id)
 {
     $patient = Patient::findOrFail($id);
     $patient->delete();  // Supprimer le patient
@@ -255,4 +260,29 @@ public function destroy($id)
     return redirect()->route('dashboard')->with('success', 'Patient supprimé avec succès');
 }
 
+// MedecinController.php
+public function updatem(Request $request, $id)
+{
+    $medecin = Medecin::findOrFail($id);
+
+    // Mettre à jour les informations
+    $medecin->user->nom = $request->input('nom');
+    $medecin->user->email = $request->input('email');
+    $medecin->user->telephone = $request->input('telephone');
+    $medecin->specialite = $request->input('specialite');
+
+    // Sauvegarder les modifications
+    $medecin->user->save();
+    $medecin->save();
+
+    return redirect()->route('dashboard')->with('success', 'Médecin mis à jour avec succès');
+}
+public function destroym($id)
+{
+    $medecin = Medecin::findOrFail($id);
+    $medecin->delete();  // Supprimer le médecin
+
+    return redirect()->route('dashboard')->with('success', 'Médecin supprimé avec succès');
+
+}
 }

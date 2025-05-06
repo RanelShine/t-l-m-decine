@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Administrateur extends Model
 {
     use HasFactory;
+    protected $fillable = ['user_id', 'departement'];
 
     // * Un administrateur appartient a un user
     public function user ()

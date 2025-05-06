@@ -9,21 +9,42 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('rendez_vouses', function (Blueprint $table) {
+        Schema::create('rendezvous', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('medecin_id')->constrained()->cascadeOnDelete();
-            $table->dateTime('date_heure')->comment('Date et heure du rendez-vous');
-            $table->dateTime('date_heure_fin')->nullable()->comment('Date et heure de fin estimée');
-            $table->enum('statut', [
-                'confirmé', 
-                'annulé', 
-                'en_attente', 
-                'terminé', 
-                'absent'
+
+            // Clés étrangères
+            $table->foreignId('patient_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
+            $table->foreignId('medecin_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
+            
+            // Date et heure du rendez-vous
+            $table->date('date_rendezvous')
+                  ->comment('Date du rendez-vous');
+            $table->time('heure')
+                  ->comment('Heure du rendez-vous');
+            
+            // Optionnel : localisation et motif
+            $table->string('localisation')
+                  ->nullable()
+                  ->comment('Lieu ou mode de consultation (ex. visio, cabinet)');
+            $table->text('motif')
+                  ->nullable()
+                  ->comment('Raison ou motif de la consultation');
+            
+            // Statut du rendez-vous
+            $table->enum('status', [
+                'confirmé',
+                'annulé',
+                'en_attente',
+                'terminé',
+                'absent',
             ])->default('en_attente');
+            
             $table->timestamps();
         });
     }

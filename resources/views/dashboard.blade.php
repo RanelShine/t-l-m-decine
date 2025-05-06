@@ -1,32 +1,19 @@
 @extends('Layouts.dashboardlayout')
 
 @section('content')
+<!-- @auth
+    <div class="card-header text-center">
+        Salut, {{ Auth::user()->name }}.
+        @if(Auth::user()->roles->isNotEmpty())
+            {{ Auth::user()->roles->first()->name }}
+        @else
+            (Aucun rôle)
+        @endif
+    </div>
+@endauth -->
 
 
 <div class="pcoded-content">
-    <!-- Page-header start -->
-    <div class="page-header">
-        <div class="page-block">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <div class="page-header-title">
-                        <h5 class="m-b-10">Dashboard</h5>
-                        <p class="m-b-0">Welcome to Doc Talk</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <ul class="breadcrumb-title">
-                        <li class="breadcrumb-item">
-                            <a href="index.html"> <i class="fa fa-home"></i> </a>
-                        </li>
-                        <li class="breadcrumb-item"><a href="#!">Dashboard</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Page-header end -->
     <div class="pcoded-inner-content">
         <!-- Main-body start -->
         <div class="main-body">
@@ -34,110 +21,7 @@
                 <!-- Page-body start -->
                 <div class="page-body">
                     <div class="row">
-                        <!-- task, page, download counter  start -->
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-purple">300</h4>
-                                            <h6 class="text-muted m-b-0">patients</h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-bar-chart f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-purple">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">% change</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-green">20+</h4>
-                                            <h6 class="text-muted m-b-0">Spécialistes</h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-file-text-o f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-green">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">% change</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-red">145</h4>
-                                            <h6 class="text-muted m-b-0">consutations </h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-calendar-check-o f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-red">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">% change</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-blue">500</h4>
-                                            <h6 class="text-muted m-b-0">dossiers </h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-hand-o-down f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-blue">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">% change</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- task, page, download counter  end -->
-
+@if(Auth::user()->role == 'administrateur')
                         <!--  sale analytics start -->
                         <div class="col-xl-8 col-md-12">
                             <div class="card">
@@ -201,15 +85,15 @@
                         <!--  gestion des patients -->
                         <div class="col-xl-10 col-md-12">
                             <div class="card table-card">
+                            <h1 class="bg-success text-center pb-3 pt-3">Liste des Patients</h1>
                                 <div class="card-header">
-
+                                
                                     <div id="patients-section" class="container" style="overflow-x:auto; max-height: 400Px;">
                                         <!-- dashboard.blade.php -->
-                                        <h1>Liste des Patients</h1>
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>#</th>
+                                                    <th>Id</th>
                                                     <th>Nom</th>
                                                     <th>Email</th>
                                                     <th>Téléphone</th>
@@ -261,7 +145,7 @@
                                 <div class="modal-body">
                                     <form action="{{ route('patients.update', $patient->id) }}" method="POST">
                                         @csrf
-                                        @method('PUT') <!-- Utilisation de PUT pour la mise à jour -->
+                                        @method('PUT') 
                                         <div class="form-group">
                                             <label for="nom">Nom</label>
                                             <input type="text" class="form-control" id="nom" name="nom" value="{{ $patient->user->nom }}" required>
@@ -317,70 +201,259 @@
                     @endforeach
                     <!-- fin gestion des patients -->
 
-                   
+                       <!--  gestion des medecin -->
+                       <div class="col-xl-10 col-md-12">
+                            <div class="card table-card">
+                            <h1 class="bg-primary text-center pb-3 pt-3">Liste des Medecins</h1>
+                                <div class="card-header">
+                                
+                                    <div id="medecins-section" class="container" style="overflow-x:auto; max-height: 400Px;">
+                                        <!-- dashboard.blade.php -->
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th>Nom</th>
+                                                    <th>Email</th>
+                                                    <th>Téléphone</th>
+                                                    <th>Spécialité</th>
+                                                    <th>Actions</th> <!-- Colonne Action ajoutée -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($medecins as $index => $medecin)
+                                                <tr>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td>{{ $medecin->user->nom }}</td>
+                                                    <td>{{ $medecin->user->email }}</td>
+                                                    <td>{{ $medecin->user->telephone }}</td>
+                                                    <td>{{ $medecin->specialite }}</td>
+                                                    <!-- Colonne Actions avec boutons -->
+                                                    <td>
+                                                        <!-- Bouton de mise à jour (update) -->
+                                                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#updateModalm{{$medecin->id }}">
+                                                            Update
+                                                        </button>
 
-                    <div class="col-xl-4 col-md-12">
-                        <div class="card ">
-                            <div class="card-header">
-                                <h5>Team Members</h5>
-                                <div class="card-header-right">
-                                    <ul class="list-unstyled card-option">
-                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                        <li><i class="fa fa-window-maximize full-card"></i></li>
-                                        <li><i class="fa fa-minus minimize-card"></i></li>
-                                        <li><i class="fa fa-refresh reload-card"></i></li>
-                                        <li><i class="fa fa-trash close-card"></i></li>
-                                    </ul>
+                                                        <!-- Bouton de suppression (delete) -->
+                                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModalm{{ $medecin->id }}">
+                                                            Delete
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-block">
-                                <div class="align-middle m-b-30">
-                                    <img src="assets/images/avatar-2.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                    <div class="d-inline-block">
-                                        <h6>David Jones</h6>
-                                        <p class="text-muted m-b-0">Developer</p>
-                                    </div>
+
+                        </div>
+                    </div>
+                    <!-- Modal de mise à jour -->
+                    @foreach($medecins as $medecin)
+                    <div class="modal fade" id="updateModalm{{ $medecin->id }}" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel{{ $medecin->id }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateModalLabel{{ $medecin->id }}">Modifier les informations du patient</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
-                                <div class="align-middle m-b-30">
-                                    <img src="assets/images/avatar-1.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                    <div class="d-inline-block">
-                                        <h6>David Jones</h6>
-                                        <p class="text-muted m-b-0">Developer</p>
-                                    </div>
-                                </div>
-                                <div class="align-middle m-b-30">
-                                    <img src="assets/images/avatar-3.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                    <div class="d-inline-block">
-                                        <h6>David Jones</h6>
-                                        <p class="text-muted m-b-0">Developer</p>
-                                    </div>
-                                </div>
-                                <div class="align-middle m-b-30">
-                                    <img src="assets/images/avatar-4.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                    <div class="d-inline-block">
-                                        <h6>David Jones</h6>
-                                        <p class="text-muted m-b-0">Developer</p>
-                                    </div>
-                                </div>
-                                <div class="align-middle m-b-10">
-                                    <img src="assets/images/avatar-5.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                    <div class="d-inline-block">
-                                        <h6>David Jones</h6>
-                                        <p class="text-muted m-b-0">Developer</p>
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    <a href="#!" class="b-b-primary text-primary">View all Projects</a>
+                                <div class="modal-body">
+                                    <form action="{{ route('medecins.update', $medecin->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT') 
+                                        <div class="form-group">
+                                            <label for="nom">Nom</label>
+                                            <input type="text" class="form-control" id="nom" name="nom" value="{{ $medecin->user->nom }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" value="{{ $medecin->user->email }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="telephone">Téléphone</label>
+                                            <input type="text" class="form-control" id="telephone" name="telephone" value="{{ $medecin->user->telephone }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="date_naissance">Date de naissance</label>
+                                            <input type="date" class="form-control" id="date_naissance" name="date_naissance" value="{{ $medecin->Date_de_Naissance }}" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--  project and team member end -->
+                    @endforeach
+
+                    <!-- Modal de suppression -->
+                    @foreach($medecins as $medecin)
+                    <div class="modal fade" id="deleteModalm{{ $medecin->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ $medecin->id }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel{{ $medecin->id }}">Confirmer la suppression</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Êtes-vous sûr de vouloir supprimer ce medecin ?</p>
+                                    <p><strong>Nom : </strong>{{ $medecin->user->nom }}</p>
+                                    <p><strong>Email : </strong>{{ $medecin->user->email }}</p>
+                                    <p><strong>Téléphone : </strong>{{ $medecin->user->telephone }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="{{ route('medecins.delete', $patient->id) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                    </form>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    <!-- fin gestion des medecins -->
+@endif
+
+@if(Auth::user()->roles->contains('name','medecin'))
+    <div class="card">
+        <div class="card-header">
+            <h5>Mes rendez-vous</h5>
+        </div>
+        <div class="card-body" style="overflow-x:auto">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Patient</th>
+                        <th>Date</th>
+                        <th>Heure</th>
+                        <th>Statut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($rvs as $i => $rv)
+                    <tr>
+                        <td>{{ $i + 1 }}</td>
+                        <td>{{ $rv->patient->user->nom }}</td>
+                        <td>{{ $rv->date_rendezvous->format('d/m/Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($rv->heure)->format('H:i') }}</td>
+                        <td>
+                            @if($rv->status === 'done')
+                                <span class="badge badge-success">Réalisé</span>
+                            @else
+                                <span class="badge badge-warning">En attente</span>
+                            @endif
+                        </td>
+                        <td>
+                        @if($rv->status === 'en_attente')
+      <button class="btn btn-sm btn-primary"
+              data-toggle="modal"
+              data-target="#confirmModal{{ $rv->id }}">
+          Confirmer
+      </button>
+  @else
+                                —
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{-- Modals de confirmation --}}
+    @foreach($rvs as $rv)
+    <div class="modal fade" id="confirmModal{{ $rv->id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="{{ route('rendezvous.confirm', $rv->id) }}" method="POST">
+            @csrf
+            <div class="modal-header">
+              <h5 class="modal-title">Confirmer le rendez-vous</h5>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <p>Voulez-vous confirmer ce rendez-vous ?</p>
+              <p><strong>Patient :</strong> {{ $rv->patient->user->nom }}</p>
+              <p><strong>Date :</strong> {{ $rv->date_rendezvous->format('d/m/Y') }}
+                 à {{ \Carbon\Carbon::parse($rv->heure)->format('H:i') }}</p>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Oui, confirmer</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    @endforeach
+
+    @endif
+ 
+          
+@if(Auth::user()->roles->contains('name', 'patient'))
+        <div class="col-xl-8 col-md-12">
+            <div class="card">
+                <div class="card-header text-center bg-success">
+                    <h5>Prise de rendez-vous</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('rendezvous.store') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="medecin_id">Choisir un médecin</label>
+                            <select name="medecin_id" id="medecin_id" class="form-control" required>
+                                <option value="">-- Sélectionner --</option>
+                                @foreach($medecins as $medecin)
+                                    <option value="{{ $medecin->id }}">
+                                        Dr. {{ $medecin->user->nom }} ({{ $medecin->specialite }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date_rendezvous">Date</label>
+                            <input type="date" name="date_rendezvous" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="heure">Heure</label>
+                            <input type="time" name="heure" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="localisation">Localisation</label>
+                            <input type="texte" name="localisation" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="motif">Motif de la consultation</label>
+                            <textarea name="motif" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Prendre rendez-vous</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
+
+            
+@if(Auth::user()->roles->contains('name', 'assistant'))
+            
+@endif
+                   
                 </div>
             </div>
             <!-- Page-body end -->
         </div>
-        <div id="styleSelector"> </div>
+        
     </div>
 </div>
 </div>

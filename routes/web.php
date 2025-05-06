@@ -40,5 +40,14 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function()
     Route::post('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-Route::put('/patients/{id}', [AuthController::class, 'update'])->name('patients.update');
-Route::delete('/patients/{id}', [AuthController::class, 'destroy'])->name('patients.delete');
+Route::put('/patients/{id}', [AuthController::class, 'updatep'])->name('patients.update');
+Route::delete('/patients/{id}', [AuthController::class, 'destroyp'])->name('patients.delete');
+Route::put('/medecins/{id}', [AuthController::class, 'updatem'])->name('medecins.update');
+Route::delete('/medecins/{id}', [AuthController::class, 'destroym'])->name('medecins.delete');
+Route::middleware(['auth'])->group(function () {
+    Route::post('/rendezvous', [DashboardController::class, 'storeRendezVous'])
+         ->name('rendezvous.store');
+
+         Route::post('/rendezvous/{id}/confirm', [DashboardController::class, 'confirm'])
+         ->name('rendezvous.confirm');
+});
