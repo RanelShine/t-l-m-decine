@@ -18,9 +18,10 @@ return new class extends Migration
             $table->foreignId('patient_id')
                   ->constrained()
                   ->cascadeOnDelete();
-            $table->foreignId('medecin_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
+                  $table->foreignId('medecin_id')
+                  ->nullable()  
+                  ->constrained() 
+                  ->cascadeOnDelete();  
             
             // Date et heure du rendez-vous
             $table->date('date_rendezvous')
@@ -31,7 +32,7 @@ return new class extends Migration
             // Optionnel : localisation et motif
             $table->string('localisation')
                   ->nullable()
-                  ->comment('Lieu ou mode de consultation (ex. visio, cabinet)');
+                  ->comment('Lieu de residence du patient');
             $table->text('motif')
                   ->nullable()
                   ->comment('Raison ou motif de la consultation');
@@ -43,6 +44,7 @@ return new class extends Migration
                 'en_attente',
                 'terminé',
                 'absent',
+                'affecté',
             ])->default('en_attente');
             
             $table->timestamps();

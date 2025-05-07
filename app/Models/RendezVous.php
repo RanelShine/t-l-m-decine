@@ -16,10 +16,11 @@ class RendezVous extends Model
         'medecin_id',
         'date_rendezvous',
         'heure',
-        'localisation',
         'motif',
+        'localisation',
         'status',
     ];
+    
 
     protected $casts = [
         'date_rendezvous' => 'date',       // convertit en Carbon (date only)

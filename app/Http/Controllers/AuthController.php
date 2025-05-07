@@ -203,6 +203,7 @@ public function create()
 // !  Connexion
 public function showLoginForm()
 { 
+    $this->create();
 
     return view('connexion');
 }

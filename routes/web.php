@@ -50,4 +50,6 @@ Route::middleware(['auth'])->group(function () {
 
          Route::post('/rendezvous/{id}/confirm', [DashboardController::class, 'confirm'])
          ->name('rendezvous.confirm');
+         Route::post('/rendezvous/{id}/confirmer', [DashboardController::class, 'confirmerParAssistant'])->name('rdv.confirmer');
+
 });

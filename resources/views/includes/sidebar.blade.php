@@ -7,12 +7,14 @@
                 <img class="img-80 img-radius" src="assets/images/avatar-4.jpg" alt="User-Profile-Image">
                 <div class="user-details">
                     <span id="more-details">
-                        @if(Auth::user()->role == 'administrateur')
+                    @if(Auth::user()->roles->contains('name', 'admin'))
                             Administrateur
-                        @elseif(Auth::user()->role == 'patient')
+                        @elseif(Auth::user()->roles->contains('name', 'patient'))
                             Patient
-                        @elseif(Auth::user()->role == 'medecin')
+                        @elseif(Auth::user()->roles->contains('name', 'medecin'))
                             Medecin
+                        @elseif(Auth::user()->roles->contains('name', 'assistant'))
+                            Assistant
                         @endif
                         <i class="fa fa-caret-down"></i>
                     </span>
@@ -22,10 +24,13 @@
             <div class="main-menu-content">
                 <ul>
                     <li class="more-details">
-                        <a href="user-profile.html"><i class="ti-user"></i>Profil</a>
+                    <a href="#" data-toggle="modal" data-target="#profileModal"><i class="ti-user"></i> Profil</a>
                         <a href="#!"><i class="ti-settings"></i>Paramètre</a>
                         <a class="dropdown-item" href="{{ route('home.logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="ti-layout-sidebar-left"></i>Deconnexion</a>
+                        <form id="logout-form" action="{{ route('home.logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                     </li>
                 </ul>
             </div>
@@ -40,7 +45,7 @@
                 </a>
             </li>
             
-            @if(Auth::user()->role == 'administrateur')
+            @if(Auth::user()->roles->contains('name', 'admin'))
             <li class="pcoded-hasmenu">
                 <a href="javascript:void(0)" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-user"></i></span>
@@ -90,7 +95,7 @@
         
         <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Dossiers medicaux</div>
         <ul class="pcoded-item pcoded-left-item">
-            @if(Auth::user()->role == 'medecin')
+        @if(Auth::user()->roles->contains('name', 'medecin'))
             <li>
                 <a href="form-elements-component.html" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-user"></i><b>FC</b></span>
@@ -114,8 +119,7 @@
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            
-            @if(Auth::user()->role == 'medecin' || Auth::user()->role == 'patient')
+            @if(Auth::user()->roles->contains('name', 'medecin') || Auth::user()->roles->contains('name', 'patient'))
             <li>
                 <a href="bs-basic-table.html" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-bell"></i><b>FC</b></span>
@@ -151,11 +155,11 @@
         </ul>
 
         <div class="pcoded-navigation-label" data-i18n="nav.category.other">
-            @if(Auth::user()->role == 'administrateur')
+            @if(Auth::user()->roles->contains('name', 'admin'))
                 Admin panel
-            @elseif(Auth::user()->role == 'patient')
+            @elseif(Auth::user()->roles->contains('name', 'patient'))
                 Patient panel
-            @elseif(Auth::user()->role == 'medecin')
+            @elseif(Auth::user()->roles->contains('name', 'medecin'))
                 Doctor panel
             @endif
         </div>
@@ -170,7 +174,7 @@
             </li>
             @endif
             
-            @if(Auth::user()->role == 'administrateur' || Auth::user()->role == 'patient')
+            @if(Auth::user()->roles->contains('name', 'medecin') || Auth::user()->roles->contains('name', 'patient'))
             <li>
                 <a href="map-google.html" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-files"></i><b>FC</b></span>
@@ -188,5 +192,26 @@
                 </a>
             </li>
         </ul>
+        <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="profileModalLabel">Profil</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Nom :</strong> {{ Auth::user()->nom }}</p>
+        <p><strong>Email :</strong> {{ Auth::user()->email }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+      </div>
     </div>
+  </div>
+</div>
+
+    </div>
+    
 </nav>
