@@ -95,7 +95,12 @@ class DashboardController extends Controller
         $rv->save();
 
         // Envoie l'email
+        // Patient
         Mail::to($rv->patient->user->email)->send(new RendezVousConfirme($rv));
+
+        // Médecin
+        Mail::to($rv->medecin->user->email)->send(new RendezVousConfirme($rv));
+
 
         return back()->with('success', 'Rendez-vous confirmé et lien Zoom envoyé.');
     }
