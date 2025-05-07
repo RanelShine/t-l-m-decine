@@ -1,126 +1,121 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Patient;
 use App\Models\Medecin;
-use App\Models\User;
 use App\Models\RendezVous;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
-use view;
+use App\Services\ZoomService;
+use App\Mail\RendezVousConfirme;
 
 class DashboardController extends Controller
 {
     public function index()
-{
-    
-    $patients = Patient::with('user')->get();
-    $medecins = Medecin::with('user')->get();
+    {
+        $patients = Patient::with('user')->get();
+        $medecins = Medecin::with('user')->get();
 
-    
-    $rvs = [];
-    if (Auth::user()->roles->contains('name', 'medecin')) {
-        $rvs = RendezVous::with('patient.user')
-                 ->where('medecin_id', Auth::user()->medecin->id)
-                 ->orderBy('date_rendezvous', 'asc')
-                 ->get();
-    }
+        $rvs = [];
 
-    if (Auth::user()->roles->contains('name', 'assistant')) {
-        $rvs = RendezVous::with('patient.user')
+        if (Auth::user()->roles->contains('name', 'medecin')) {
+            $rvs = RendezVous::with('patient.user')
+                ->where('medecin_id', Auth::user()->medecin->id)
                 ->orderBy('date_rendezvous', 'asc')
                 ->get();
-    }
-    
-    return view('dashboard', compact('patients', 'medecins', 'rvs'));
-}
-    
-public function storeRendezVous(Request $request)
-{
-    $request->validate([
-        'date_rendezvous'  => 'required|date|after_or_equal:today',
-        'heure'            => 'required',
-        'motif'            => 'required|string',
-        'localisation'     => 'required|string',
-    ]);
+        }
 
-    // Vérification de l'authentification
-    $patient = Auth::user()->patient ?? null;
-    if (!$patient) {
-        return back()->with('error', 'Utilisateur non autorisé.');
+        if (Auth::user()->roles->contains('name', 'assistant')) {
+            $rvs = RendezVous::with('patient.user')
+                ->orderBy('date_rendezvous', 'asc')
+                ->get();
+        }
+
+        return view('dashboard', compact('patients', 'medecins', 'rvs'));
     }
 
-    // Création du rendez-vous
-    RendezVous::create([
-        'patient_id'      => $patient->id,
-        'date_rendezvous' => $request->date_rendezvous,
-        'heure'           => $request->heure,
-        'motif'           => $request->motif,
-        'localisation'    => $request->localisation,
-        'status'          => 'en_attente', // explicite au cas où
-        'medecin_id'      => null, // Pas de médecin au départ
-    ]);
+    public function storeRendezVous(Request $request)
+    {
+        $request->validate([
+            'date_rendezvous' => 'required|date|after_or_equal:today',
+            'heure'           => 'required',
+            'motif'           => 'required|string',
+            'localisation'    => 'required|string',
+        ]);
 
-    return back()->with('success', 'Rendez-vous pris avec succès.');
-}
+        $patient = Auth::user()->patient ?? null;
+        if (!$patient) {
+            return back()->with('error', 'Utilisateur non autorisé.');
+        }
 
+        RendezVous::create([
+            'patient_id'      => $patient->id,
+            'date_rendezvous' => $request->date_rendezvous,
+            'heure'           => $request->heure,
+            'motif'           => $request->motif,
+            'localisation'    => $request->localisation,
+            'status'          => 'en_attente',
+            'medecin_id'      => null,
+        ]);
 
-
-    
+        return back()->with('success', 'Rendez-vous pris avec succès.');
+    }
 
     public function myRendezvous()
     {
-        // Récupère les rendez-vous pour le médecin connecté
-        $rvs = \App\Models\RendezVous::with('patient.user')
-                   ->where('medecin_id', auth()->user()->medecin->id)
-                   ->orderBy('date_rendezvous', 'asc')
-                   ->get();
-    
-        // Passe $rvs à la vue
+        $rvs = RendezVous::with('patient.user')
+            ->where('medecin_id', Auth::user()->medecin->id)
+            ->orderBy('date_rendezvous', 'asc')
+            ->get();
+
         return view('rendezvous.my', compact('rvs'));
     }
 
-    public function confirm(Request $request, $id)
-{
-    $request->validate([
-        'medecin_id' => 'required|exists:medecins,id',
-    ]);
+    public function confirm(Request $request, $id, ZoomService $zoom)
+    {
+        $request->validate([
+            'medecin_id' => 'required|exists:medecins,id',
+        ]);
 
-    $rv = RendezVous::findOrFail($id);
+        $rv = RendezVous::findOrFail($id);
 
-    if ($rv->status === 'affecté') {
+        if ($rv->status !== 'affecté') {
+            return back()->with('error', 'Le rendez-vous ne peut être confirmé que s’il est affecté.');
+        }
+
         $rv->status = 'confirmé';
         $rv->medecin_id = $request->medecin_id;
+
+        // Crée la réunion Zoom
+        $dateTime = $rv->date_rendezvous->setTimeFromTimeString($rv->heure);
+        $rv->zoom_link = $zoom->createMeeting('Consultation médicale', $dateTime);
+
         $rv->save();
 
-        return back()->with('success', 'Rendez-vous confirmé par le médecin.');
+        // Envoie l'email
+        Mail::to($rv->patient->user->email)->send(new RendezVousConfirme($rv));
+
+        return back()->with('success', 'Rendez-vous confirmé et lien Zoom envoyé.');
     }
 
-    return back()->with('error', 'Le rendez-vous ne peut être confirmé que s’il est affecté.');
-}
+    public function confirmerParAssistant(Request $request, $id)
+    {
+        $request->validate([
+            'medecin_id' => 'required|exists:medecins,id',
+        ]);
 
+        $rdv = RendezVous::findOrFail($id);
 
-public function confirmerParAssistant(Request $request, $id)
-{
-    $request->validate([
-        'medecin_id' => 'required|exists:medecins,id',
-    ]);
+        if ($rdv->status === 'en_attente') {
+            $rdv->status = 'affecté';
+            $rdv->medecin_id = $request->medecin_id;
+            $rdv->save();
 
-    $rdv = Rendezvous::findOrFail($id);
+            return back()->with('success', 'Rendez-vous affecté au médecin.');
+        }
 
-    if ($rdv->status === 'en_attente') {
-        $rdv->status = 'affecté';
-        $rdv->medecin_id = $request->medecin_id;
-        $rdv->save();
-
-        return back()->with('success', 'Rendez-vous confirmé par l’assistant.');
+        return back()->with('error', 'Le rendez-vous ne peut pas être confirmé.');
     }
-
-    return back()->with('error', 'Le rendez-vous ne peut pas être confirmé.');
-}
-
-
-
-   
 }
