@@ -37,28 +37,27 @@ class ZoomService
     /**
      * Crée une réunion programmée et retourne le join_url.
      */
-    public function createMeeting($topic, $startTime, $duration = 30, $timezone = 'Africa/Douala'): string
-    {
-        $token = $this->getAccessToken();
+    public function createMeeting($topic, $startTime)
+{
+    $userId = 'ranelleshine076@gmail.com'; // Ton propre compte Zoom
 
-        $response = Http::withToken($token)
-            ->post($this->config['base_url'] . '/users/me/meetings', [
-                'topic'      => $topic,
-                'type'       => 2,
-                'start_time' => $startTime->format('Y-m-d\TH:i:s'),
-                'duration'   => $duration,
-                'timezone'   => $timezone,
-                'settings'   => [
-                    'join_before_host' => true,
-                    'approval_type'    => 0,
-                    'waiting_room'     => true,
-                ],
-            ]);
+    $accessToken = $this->getAccessToken();
 
-        if (! $response->successful()) {
-            throw new \Exception('Erreur création réunion Zoom: ' . $response->body());
-        }
+    $response = Http::withToken($accessToken)->post("https://api.zoom.us/v2/users/{$userId}/meetings", [
+        'topic'      => $topic,
+        'type'       => 2, // scheduled
+        'start_time' => $startTime->toIso8601String(),
+        'timezone'   => 'Africa/Douala',
+        'duration'   => 30,
+        'settings'   => [
+            'join_before_host'     => true,   // ✅ Clé pour démarrer sans hôte
+            'waiting_room'         => false,
+            'approval_type'        => 0,
+            'meeting_authentication' => false,
+        ],
+    ]);
 
-        return $response->json()['join_url'];
-    }
+    return $response->json('join_url');
+}
+
 }

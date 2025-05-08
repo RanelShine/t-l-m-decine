@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Services\ZoomService;
 use App\Mail\RendezVousConfirme;
+use App\Mail\RendezVousConfirmeMedecin;
 
 class DashboardController extends Controller
 {
@@ -95,11 +96,12 @@ class DashboardController extends Controller
         $rv->save();
 
         // Envoie l'email
-        // Patient
-        Mail::to($rv->patient->user->email)->send(new RendezVousConfirme($rv));
+// Envoie au patient
+Mail::to($rv->patient->user->email)->send(new RendezVousConfirme($rv));
 
-        // Médecin
-        Mail::to($rv->medecin->user->email)->send(new RendezVousConfirme($rv));
+// Envoie au médecin
+Mail::to($rv->medecin->user->email)->send(new RendezVousConfirmeMedecin($rv));
+
 
 
         return back()->with('success', 'Rendez-vous confirmé et lien Zoom envoyé.');

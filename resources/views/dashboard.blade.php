@@ -22,65 +22,59 @@
                 <div class="page-body">
                     <div class="row">
                     @if(Auth::user()->roles->contains('name', 'admin'))
-                        <!--  sale analytics start -->
-                        <div class="col-xl-8 col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Evolution des consultations</h5>
-                                    <span class="text-muted">Get 15% Off on <a href="https://www.amcharts.com/" target="_blank">amCharts</a> licences. Use code "codedthemes" and get the discount.</span>
-                                    <div class="card-header-right">
-                                        <ul class="list-unstyled card-option">
-                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                            <li><i class="fa fa-window-maximize full-card"></i></li>
-                                            <li><i class="fa fa-minus minimize-card"></i></li>
-                                            <li><i class="fa fa-refresh reload-card"></i></li>
-                                            <li><i class="fa fa-trash close-card"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="card-block">
-                                    <div id="sales-analytics" style="height: 400px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-12">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h4>$256.23</h4>
-                                            <p class="text-muted">This Month</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <label class="label label-success">+20%</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <canvas id="this-month" style="height: 150px;"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card quater-card">
-                                <div class="card-block">
-                                    <h6 class="text-muted m-b-15">This Quarter</h6>
-                                    <h4>$3,9452.50</h4>
-                                    <p class="text-muted">$3,9452.50</p>
-                                    <h5>87</h5>
-                                    <p class="text-muted">Online Revenue<span class="f-right">80%</span></p>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-c-blue" style="width: 80%"></div>
-                                    </div>
-                                    <h5 class="m-t-15">68</h5>
-                                    <p class="text-muted">Offline Revenue<span class="f-right">50%</span></p>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-c-green" style="width: 50%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--  sale analytics end -->
+                        
+<!-- debut section de rdv -->
+<div class="card" id="rendezvous-section">
+    <div class="card-header">
+        <h5>Liste des rendez-vous</h5>
+    </div>
+    <div class="card-body" style="overflow-x:auto">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Patient</th>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+    @foreach($rvs as $i => $rv)
+    <tr>
+        <td>{{ $i + 1 }}</td>
+        <td>{{ $rv->patient->user->nom }}</td>
+        <td>{{ $rv->date_rendezvous->format('d/m/Y') }}</td>
+        <td>{{ \Carbon\Carbon::parse($rv->heure)->format('H:i') }}</td>
+        <td>
+            @switch($rv->status)
+                @case('confirmé')
+                    <span class="badge badge-primary">Confirmé</span>
+                    @break
+                @case('terminé')
+                    <span class="badge badge-success">Réalisé</span>
+                    @break
+                @case('annulé')
+                    <span class="badge badge-danger">Annulé</span>
+                    @break
+                @case('absent')
+                    <span class="badge badge-dark">Absent</span>
+                    @break
+                @case('affecté')
+                    <span class="badge badge-dark">Affecté</span>
+                    @break
+                @default
+                    <span class="badge badge-warning">En attente</span>
+            @endswitch
+        </td>
+    </tr>
+    @endforeach
+</tbody>
+
+        </table>
+    </div>
+</div>
+                        <!--  fin gestion des rdv -->
 
                         <!--  gestion des patients -->
                         <div class="col-xl-10 col-md-12">
@@ -323,102 +317,327 @@
 @endif
 
 @if(Auth::user()->roles->contains('name','medecin'))
-    <div class="card">
-        <div class="card-header">
-            <h5>Mes rendez-vous</h5>
-        </div>
-        <div class="card-body" style="overflow-x:auto">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Patient</th>
-                        <th>Date</th>
-                        <th>Heure</th>
-                        <th>Statut</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($rvs as $i => $rv)
-                    <tr>
-                        <td>{{ $i + 1 }}</td>
-                        <td>{{ $rv->patient->user->nom }}</td>
-                        <td>{{ $rv->date_rendezvous->format('d/m/Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($rv->heure)->format('H:i') }}</td>
-                        <td>
-                        @switch($rv->status)
-        @case('confirmé')
-            <span class="badge badge-primary">Confirmé</span>
-            @break
-        @case('terminé')
-            <span class="badge badge-success">Réalisé</span>
-            @break
-        @case('annulé')
-            <span class="badge badge-danger">Annulé</span>
-            @break
-        @case('absent')
-            <span class="badge badge-dark">Absent</span>
-            @break
-        @case('affecté')
-            <span class="badge badge-dark">Affecté</span>
-            @break
-        @default
-            <span class="badge badge-warning">En attente</span>
-    @endswitch
-                        </td>
-                        <td>
-                        @if($rv->status === 'affecté')
-      <button class="btn btn-sm btn-primary"
-              data-toggle="modal"
-              data-target="#confirmModal{{ $rv->id }}">
-          valider
-      </button>
-  @else
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <!-- Section des rendez-vous -->
+        <div class="card" id="rendezvous-section">
+            <div class="card-header">
+                <h5>Mes rendez-vous</h5>
+            </div>
+            <div class="card-body" style="overflow-x:auto">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Patient</th>
+                            <th>Date</th>
+                            <th>Heure</th>
+                            <th>Statut</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($rvs as $i => $rv)
+                        <tr>
+                            <td>{{ $i + 1 }}</td>
+                            <td>{{ $rv->patient->user->nom }}</td>
+                            <td>{{ $rv->date_rendezvous->format('d/m/Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($rv->heure)->format('H:i') }}</td>
+                            <td>
+                                @switch($rv->status)
+                                    @case('confirmé')
+                                    <span class="badge badge-primary">Confirmé</span>
+                                    @break
+                                    @case('terminé')
+                                    <span class="badge badge-success">Réalisé</span>
+                                    @break
+                                    @case('annulé')
+                                    <span class="badge badge-danger">Annulé</span>
+                                    @break
+                                    @case('absent')
+                                    <span class="badge badge-dark">Absent</span>
+                                    @break
+                                    @case('affecté')
+                                    <span class="badge badge-dark">Affecté</span>
+                                    @break
+                                    @default
+                                    <span class="badge badge-warning">En attente</span>
+                                @endswitch
+                            </td>
+                            <td>
+                                @if($rv->status === 'affecté')
+                                <button class="btn btn-sm btn-primary"
+                                        data-toggle="modal"
+                                        data-target="#confirmModal{{ $rv->id }}">
+                                    valider
+                                </button>
+                                @else
                                 —
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {{-- Modals de confirmation --}}
+        @foreach($rvs as $rv)
+        <div class="modal fade" id="confirmModal{{ $rv->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{{ route('rendezvous.confirm', $rv->id) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="medecin_id" value="{{ Auth::user()->medecin->id }}">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirmer le rendez-vous</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Voulez-vous confirmer ce rendez-vous ?</p>
+                            <p><strong>Patient :</strong> {{ $rv->patient->user->nom }}</p>
+                            <p><strong>Date :</strong> {{ $rv->date_rendezvous->format('d/m/Y') }}
+                               à {{ \Carbon\Carbon::parse($rv->heure)->format('H:i') }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Confirmer</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endforeach
+
+        <!-- Carte des prescriptions -->
+        <div class="col-md-6 mb-4" id="prescriptions-section">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Mes prescriptions</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Logique de la prescription -->
+                    <p>Aucune prescription disponible pour le moment.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carte du dossier médical -->
+        <div class="col-md-6 mb-4" id="dossier-medical-section">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Dossier Médical</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Logique du dossier médical -->
+                    <p>Aucun dossier médical disponible pour le moment.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- formulaire -->
+<div class="container mt-4" id="form-section">
+    <div class="row justify-content-center">
+        <!-- Carte pour les médecins -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Gestion des Dossiers Médicaux et Prescriptions</h5>
+                </div>
+                <div class="card-body text-center">
+                    <!-- Boutons d'action -->
+                    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#prescriptionModal">Faire une Prescription</button>
+                    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addDossierModal">Ajouter un Dossier Médical</button>
+                    <button class="btn btn-warning mb-3" data-toggle="modal" data-target="#editDossierModal">Éditer un Dossier Médical</button>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 
-    {{-- Modals de confirmation --}}
-    @foreach($rvs as $rv)
-<div class="modal fade" id="confirmModal{{ $rv->id }}" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
+<!-- Modale pour faire une prescription -->
+<div class="modal fade" id="prescriptionModal" tabindex="-1" role="dialog" aria-labelledby="prescriptionModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form action="{{ route('rendezvous.confirm', $rv->id) }}" method="POST">
+      <form action="" method="POST">
         @csrf
-        <input type="hidden" name="medecin_id" value="{{ Auth::user()->medecin->id }}">
         <div class="modal-header">
-          <h5 class="modal-title">Confirmer le rendez-vous</h5>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h5 class="modal-title" id="prescriptionModalLabel">Faire une Prescription</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
-          <p>Voulez-vous confirmer ce rendez-vous ?</p>
-          <p><strong>Patient :</strong> {{ $rv->patient->user->nom }}</p>
-          <p><strong>Date :</strong> {{ $rv->date_rendezvous->format('d/m/Y') }}
-             à {{ \Carbon\Carbon::parse($rv->heure)->format('H:i') }}</p>
+          <!-- Champ pour la prescription -->
+          <div class="form-group">
+            <label for="patient">Patient</label>
+            <select name="patient_id" class="form-control" required>
+              <option value="">Sélectionner un patient</option>
+              <!-- Options de patients ici -->
+              @foreach($patients as $patient)
+              <option value="{{ $patient->id }}">{{ $patient->user->nom }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="medication">Médicaments</label>
+            <textarea name="medication" class="form-control" rows="3" required></textarea>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Confirmer</button>
+          <button type="submit" class="btn btn-primary">Sauvegarder</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
         </div>
       </form>
     </div>
   </div>
 </div>
-@endforeach
 
+<!-- Modale pour ajouter un dossier médical -->
+<div class="modal fade" id="addDossierModal" tabindex="-1" role="dialog" aria-labelledby="addDossierModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form action="" method="POST">
+        @csrf
+        <div class="modal-header">
+          <h5 class="modal-title" id="addDossierModalLabel">Ajouter un Dossier Médical</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Formulaire d'ajout du dossier médical -->
+          <div class="form-group">
+            <label for="patient">Patient</label>
+            <select name="patient_id" class="form-control" required>
+              <option value="">Sélectionner un patient</option>
+              <!-- Options de patients ici -->
+              @foreach($patients as $patient)
+              <option value="{{ $patient->id }}">{{ $patient->user->nom }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="dossier_details">Détails du Dossier Médical</label>
+            <textarea name="dossier_details" class="form-control" rows="3" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Sauvegarder</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modale pour éditer un dossier médical -->
+<div class="modal fade" id="editDossierModal" tabindex="-1" role="dialog" aria-labelledby="editDossierModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form action="" method="POST">
+        @csrf
+        <input type="hidden" name="dossier_id" id="dossier_id" value="">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editDossierModalLabel">Éditer un Dossier Médical</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Formulaire d'édition du dossier médical -->
+          <div class="form-group">
+            <label for="edit_patient">Patient</label>
+            <select name="patient_id" id="edit_patient" class="form-control" required>
+              <option value="">Sélectionner un patient</option>
+              <!-- Options de patients ici -->
+              @foreach($patients as $patient)
+              <option value="{{ $patient->id }}">{{ $patient->user->nom }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit_dossier_details">Détails du Dossier Médical</label>
+            <textarea name="dossier_details" id="edit_dossier_details" class="form-control" rows="3" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-warning">Mettre à jour</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- patient -->
+<div class="container mt-4" id="patient-section">
+    <div class="row justify-content-center">
+        <!-- Carte pour la liste des patients -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Liste des Patients</h5>
+                </div>
+                <div class="card-body" style="overflow-x:auto">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Patient</th>
+                                <th>Date du Rendez-vous</th>
+                                <th>Heure</th>
+                                <th>Statut</th>
+                                <th>prescription</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($rvs as $i => $rv)
+                                <tr>
+                                    <td>{{ $i + 1 }}</td>
+                                    <td>{{ $rv->patient->user->nom }}</td>
+                                    <td>{{ $rv->date_rendezvous->format('d/m/Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($rv->heure)->format('H:i') }}</td>
+                                    <td>
+                                        @switch($rv->status)
+                                            @case('confirmé')
+                                                <span class="badge badge-primary">Confirmé</span>
+                                                @break
+                                            @case('terminé')
+                                                <span class="badge badge-success">Réalisé</span>
+                                                @break
+                                            @case('annulé')
+                                                <span class="badge badge-danger">Annulé</span>
+                                                @break
+                                            @case('absent')
+                                                <span class="badge badge-dark">Absent</span>
+                                                @break
+                                            @case('affecté')
+                                                <span class="badge badge-warning">Affecté</span>
+                                                @break
+                                            @default
+                                                <span class="badge badge-secondary">En attente</span>
+                                        @endswitch
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     @endif
  
           
 @if(Auth::user()->roles->contains('name', 'patient'))
-        <div class="col-xl-8 col-md-12">
+<!-- section de rdv -->
+        <div class="col-xl-8 col-md-12" id="rendezvous-section">
             <div class="card">
                 <div class="card-header text-center bg-success">
                     <h5>Prise de rendez-vous</h5>
@@ -447,11 +666,43 @@
                 </div>
             </div>
         </div>
+
+        <!-- fin section rdv -->
+         
+        <div class="row">
+    <!-- Carte des prescriptions -->
+    <div class="col-md-6" id="prescriptions-section">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Mes prescriptions</h5>
+            </div>
+            <div class="card-body">
+                
+                <!-- definition de la logique de la prescription -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Carte du dossier médical -->
+    <div class="col-md-6" id="dossier-medical-section">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Mon dossier médical</h5>
+            </div>
+            <div class="card-body">
+
+                <!-- definition de la logique du dossier medical -->
+            </div>
+        </div>
+    </div>
+</div>
+
     @endif
 
             
 @if(Auth::user()->roles->contains('name', 'assistant'))
-<div class="card">
+<!-- section de rdv -->
+<div class="card" id="rendezvous-section">
     <div class="card-header">
         <h5>Liste des rendez-vous</h5>
     </div>
